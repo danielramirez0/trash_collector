@@ -70,24 +70,27 @@ def edit_profile(request):
 
 
 @login_required
-# def customers(request, filter_prop, filter_value):
 def customers(request):
     logged_in_user = request.user
     Customer = apps.get_model('customers.Customer')
-    if request.GET.get('sort_by') == 'All':
-        customers_list = Customer.objects.all()
-        display_title = 'All Customers'
+    if request.method == "POST":
+        if request.POST.get('sort-method') == 'All':
+            customers_list = Customer.objects.all()
+            display_title = 'All Customers'
+        else:
+            filter_value = request.POST.get('sort-value')
+            if request.POST.get('sort-method') == 'zip_code':
+                customers_list = Customer.objects.filter(zip_code=filter_value)
+                display_title = f"Customers in Zip code {filter_value}"
+            elif request.POST.get('sort-method') == 'balance':
+                customers_list = Customer.objects.filter(balance=filter_value)
+                display_title = f"Customers with balances of ${filter_value}"
+            elif request.POST.get('sort-method') == 'weekly_pickup':
+                customers_list = Customer.objects.filter(weekly_pickup=filter_value)
+                display_title = f"Customers with weekly pickup day of {filter_value}"
     else:
-        filter_value = request.GET.get('value')
-        if request.GET.get('sort_by') == 'zip_code':
-            customers_list = Customer.objects.filter(zip_code=filter_value)
-            display_title = f"Customers in Zip code {filter_value}"
-        elif request.GET.get('sort_by') == 'balance':
-            customers_list = Customer.objects.filter(balance=filter_value)
-            display_title = f"Customers with balances of ${filter_value}"
-        elif request.GET.get('sort_by') == 'weekly_pickup':
-            customers_list = Customer.objects.filter(weekly_pickup=filter_value)
-            display_title = f"Customers with weekly pickup day of {filter_value}"
+        customers_list = Customer.objects.all()
+        display_title = "All Customers"
     today = date.today()
     try:
         logged_in_employee = Employee.objects.get(user=logged_in_user)
