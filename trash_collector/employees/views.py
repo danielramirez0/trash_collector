@@ -11,8 +11,6 @@ from datetime import date
 from .models import Employee
 # Create your views here.
 
-# TODO: Create a function for each path created in employees/urls.py. Each will need a template as well.
-
 
 @login_required
 def index(request):
@@ -69,3 +67,34 @@ def edit_profile(request):
             'logged_in_employee': logged_in_employee
         }
         return render(request, 'employees/edit_profile.html', context)
+
+
+@login_required
+def customers(request, filter_prop, filter_value):
+    logged_in_user = request.user
+    Customer = apps.get_model('customers.Customer')
+    if filter_prop == 'All':
+        customers_list = Customer.objects.all()
+        display_title = 'All Customers'
+    else:
+        if filter_prop == 'zip_code':
+            customers_list = Customer.objects.filter(zip_code=filter_value)
+            display_title = f"Customers in Zip code {filter_value}"
+        elif filter_prop == 'balance':
+            customers_list = Customer.objects.filter(balance=filter_value)
+            display_title = f"Customers with balances of ${filter_value}"
+        elif filter_prop == 'weekly_pickup':
+            customers_list = Customer.objects.filter(weekly_pickup=filter_value)
+            display_title = f"Customers with weekly pickup day of {filter_value}"
+    today = date.today()
+    try:
+        logged_in_employee = Employee.objects.get(user=logged_in_user)
+        context = {
+            'logged_in_employee': logged_in_employee,
+            'today': today,
+            'all_customers': customers_list,
+            'display_title': display_title,
+        }
+        return render(request, 'employees/customers.html', context)
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect(reverse('employees:create'))

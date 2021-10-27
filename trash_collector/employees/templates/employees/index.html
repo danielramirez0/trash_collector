@@ -7,24 +7,18 @@
 Hello {{ logged_in_employee.name }}!
 <br>
 <br>
-<h3>Assigned Customers</h3>
+<h3>Customers for {{today}}</h3>
 <div class="row">
-
-    <ul class="list-group list-group-horizontal">
-        {% for customer in assigned_customers %}
-        <li class="list-group-item">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">{{customer.name}}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{customer.address}}</h6>
-                    <p class="card-text">Account balance ${{customer.balance}}</p>
-                    <a href="#" class="card-link">Confirm Pick Up</a>
-                    <a href="#" class="card-link">Something else</a>
-                </div>
-            </div>
-        </li>
-        {% endfor %}
-    </ul>
+    {% for customer in assigned_customers %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{customer.name}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{customer.address}}</h6>
+            <p class="card-text">Account balance ${{customer.balance}}</p>
+            <a href="{% url 'employees:edit_profile' %}" class="btn btn-primary">Pickup</a>
+        </div>
+    </div>
+    {% endfor %}
 </div>
 
 {% else %}

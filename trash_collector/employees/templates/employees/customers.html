@@ -1,0 +1,36 @@
+{% extends 'employees/employee_base.html' %}
+
+{% block title %}{% block header %} {{display_title}}{% endblock %}{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<h3>Customers List</h3>
+<div class="row">
+    {% for customer in all_customers %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{customer.name}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{customer.address}}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">{{customer.zip_code}}</h6>
+            <p class="card-text">Account balance: ${{customer.balance}}</p>
+            <p class="card-text">Pickup day: {{customer.weekly_pickup}}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="row">
+    <h3>Filter List</h3>
+    <div class="btn-group" role="group" aria-label="Filters">
+        <a class="nav-item nav-link" href="{% url 'employees:customers' 'All' 'All'%}">All</a>
+        <a class="nav-item nav-link" href="{% url 'employees:customers' 'zip_code' '10001'%}">By Zip Code</a>
+        <a class="nav-item nav-link" href="{% url 'employees:customers' 'weekly_pickup' 'Monday'%}">By Day Of Week</a>
+        <a class="nav-item nav-link" href="{% url 'employees:customers' 'balance' '20'%}">By Account Balance</a>
+    </div>
+</div>
+
+{% else %}
+<p>You are at the employee index, but you are not logged in.</p>
+<a href="{% url 'login' %}">Log In</a>
+<a href="{% url 'accounts:register' %}">Sign Up</a>
+{% endif %}
+{% endblock %}
