@@ -130,3 +130,4 @@ dmypy.json
 
 # Custom
 TrashCollector_Employee.docx
+.DS_Store
