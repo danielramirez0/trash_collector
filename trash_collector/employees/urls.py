@@ -8,6 +8,6 @@ app_name = "employees"
 urlpatterns = [
     path('', views.index, name="index"),
     path('new/', views.create, name="create"),
-    path('customers/<str:filter_prop>/<str:filter_value>', views.customers, name="customers"),
+    path('customers/', views.customers, name="customers"),
     path('edit_profile/', views.edit_profile, name="edit_profile")
 ]

@@ -70,20 +70,22 @@ def edit_profile(request):
 
 
 @login_required
-def customers(request, filter_prop, filter_value):
+# def customers(request, filter_prop, filter_value):
+def customers(request):
     logged_in_user = request.user
     Customer = apps.get_model('customers.Customer')
-    if filter_prop == 'All':
+    if request.GET.get('sort_by') == 'All':
         customers_list = Customer.objects.all()
         display_title = 'All Customers'
     else:
-        if filter_prop == 'zip_code':
+        filter_value = request.GET.get('value')
+        if request.GET.get('sort_by') == 'zip_code':
             customers_list = Customer.objects.filter(zip_code=filter_value)
             display_title = f"Customers in Zip code {filter_value}"
-        elif filter_prop == 'balance':
+        elif request.GET.get('sort_by') == 'balance':
             customers_list = Customer.objects.filter(balance=filter_value)
             display_title = f"Customers with balances of ${filter_value}"
-        elif filter_prop == 'weekly_pickup':
+        elif request.GET.get('sort_by') == 'weekly_pickup':
             customers_list = Customer.objects.filter(weekly_pickup=filter_value)
             display_title = f"Customers with weekly pickup day of {filter_value}"
     today = date.today()

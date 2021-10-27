@@ -2,6 +2,6 @@
 
 {% block navbar %}
     <a class="nav-item nav-link" href="{% url 'employees:index' %}">Home</a>
-    <a class="nav-item nav-link" href="{% url 'employees:customers' 'All' 'All'%}">Customers</a>
+    <a class="nav-item nav-link" href="{% url 'employees:customers' %}?sort_by=All">Customers</a>
     <a class="nav-item nav-link" href="{% url 'employees:edit_profile' %}">Edit Profile</a>
 {% endblock %}
