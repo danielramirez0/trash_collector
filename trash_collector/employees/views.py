@@ -25,13 +25,14 @@ def index(request):
         assigned_customers = Customer.objects.filter(
             zip_code=logged_in_employee.zip_code
         ).filter(Q(weekly_pickup=today.strftime('%A')) | Q(one_time_pickup=today)
-                 ).exclude(Q(suspend_start__lte=today), Q(suspend_end__gte=today)
+                 ).exclude(suspend_start__lte=today, suspend_end__gte=today
                            ).exclude(date_of_last_pickup=today)
 
         context = {
             'logged_in_employee': logged_in_employee,
             'today': today,
-            'assigned_customers': assigned_customers
+            'assigned_customers': assigned_customers,
+            'all_customers': Customer.objects.all()
         }
         return render(request, 'employees/index.html', context)
     except ObjectDoesNotExist:

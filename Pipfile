@@ -9,6 +9,7 @@ mysql-connector-python = "==8.0.26"
 
 [dev-packages]
 autopep8 = "*"
+django-livereload-server = "*"
 
 [requires]
 python_version = "3.9"
