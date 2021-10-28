@@ -9,6 +9,7 @@ Hello {{ logged_in_employee.name }}!
 <br>
 <h3>Customers for {{today}}</h3>
 <div class="row">
+    {% if assigned_customers %}
     {% for customer in assigned_customers %}
     <div class="card" style="width: 18rem;">
         <div class="card-body">
@@ -19,6 +20,11 @@ Hello {{ logged_in_employee.name }}!
         </div>
     </div>
     {% endfor %}
+    {% else %}
+    <p class="text-center">
+        There are no customers today who need a pickup!
+    </p>
+    {% endif %}
 </div>
 
 {% else %}

@@ -4,7 +4,6 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-<h3>Customers List</h3>
 <div class="row">
     {% for customer in all_customers %}
     <div class="card" style="width: 18rem;">
@@ -29,13 +28,47 @@
                 <option value="All" selected>All</option>
                 <option value="zip_code">Zip Code</option>
                 <option value="weekly_pickup">Pickup Day of Week</option>
-                <option value="balance">Balance Due</option>
             </select>
-            <input id="sort-value" name="sort-value" type="text" class="form-control" placeholder="Type the value"
-                aria-label="search value" />
+            <select style="display: none;" id='sort-value' name='sort-value' class="form-select"
+                aria-label="Select sort method" form="filter">
+                <option id='select-default-value' name='blank' value="blank">Select a value</option>
+                {% for zip in zip_codes %}
+                <option name='zip-code' style="display: none;" value="{{zip.zip_code}}">---</option>
+                {% endfor %}
+                {% for day in weekly_pickups %}
+                <option name='weekly_pickup' style="display: none;" value="{{day.weekly_pickup}}">---</option>
+                {% endfor %}
+            </select>
         </div>
-        <button type="submit" class="btn btn-primary" value="Submit">Submit</button>
+        <button type="submit" class="btn btn-primary" value="Submit">Search</button>
     </form>
+    <script type="text/javascript">
+        const zipCodes = document.getElementsByName('zip-code')
+        const weekdays = document.getElementsByName('weekly_pickup')
+        let sortMethod = document.getElementById("sort-method")
+        let sortValue = document.getElementById("sort-value")
+        sortMethod.addEventListener("change", function () {
+            zipCodes.forEach(el => el.style = 'display:none')
+            weekdays.forEach(el => el.style = 'display:none')
+            if (sortMethod.value === 'All') {
+                sortValue.style = 'display: none;'
+            }
+            if (sortMethod.value === 'zip_code') {
+                sortValue.style = 'display: block;'
+                zipCodes.forEach((el) => {
+                    el.style = ""
+                    el.innerText = el.value
+                })
+            }
+            else if (sortMethod.value === 'weekly_pickup') {
+                sortValue.style = 'display: block;'
+                weekdays.forEach((el) => {
+                    el.style = ""
+                    el.innerText = el.value
+                })
+            }
+        })
+    </script>
 </div>
 
 {% else %}

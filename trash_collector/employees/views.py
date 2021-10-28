@@ -82,11 +82,9 @@ def customers(request):
             if request.POST.get('sort-method') == 'zip_code':
                 customers_list = Customer.objects.filter(zip_code=filter_value)
                 display_title = f"Customers in Zip code {filter_value}"
-            elif request.POST.get('sort-method') == 'balance':
-                customers_list = Customer.objects.filter(balance=filter_value)
-                display_title = f"Customers with balances of ${filter_value}"
             elif request.POST.get('sort-method') == 'weekly_pickup':
-                customers_list = Customer.objects.filter(weekly_pickup=filter_value)
+                customers_list = Customer.objects.filter(
+                    weekly_pickup=filter_value)
                 display_title = f"Customers with weekly pickup day of {filter_value}"
     else:
         customers_list = Customer.objects.all()
@@ -99,7 +97,10 @@ def customers(request):
             'today': today,
             'all_customers': customers_list,
             'display_title': display_title,
+            'zip_codes': Customer.objects.order_by('zip_code').values('zip_code').distinct(),
+            'weekly_pickups': Customer.objects.order_by('weekly_pickup').values('weekly_pickup').distinct()
         }
         return render(request, 'employees/customers.html', context)
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse('employees:create'))
+
