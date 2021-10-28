@@ -16,7 +16,7 @@ Hello {{ logged_in_employee.name }}!
             <h5 class="card-title">{{customer.name}}</h5>
             <h6 class="card-subtitle mb-2 text-muted">{{customer.address}}</h6>
             <p class="card-text">Account balance ${{customer.balance}}</p>
-            <a href="{% url 'employees:edit_profile' %}" class="btn btn-primary">Pickup</a>
+            <a href="{% url 'employees:pickup' customer.id %}" class="btn btn-primary">Pickup</a>
         </div>
     </div>
     {% endfor %}

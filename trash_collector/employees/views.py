@@ -104,3 +104,15 @@ def customers(request):
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse('employees:create'))
 
+@login_required
+def pickup(request, id):
+    Customer = apps.get_model('customers.Customer')
+    try:
+        customer = Customer.objects.get(pk=id)
+        today = date.today()
+        customer.date_of_last_pickup = today
+        customer.balance += 20
+        customer.save()
+        return HttpResponseRedirect(reverse('employees:index'))
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect(reverse('employees:index'))
