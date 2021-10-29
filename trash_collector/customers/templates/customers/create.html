@@ -9,7 +9,7 @@
 <label for="autocomplete" class="form-label">Use to fill address fields:</label>
 <input class='form-control text-center' id="autocomplete" placeholder="Type address here, select and press enter"
     type="text" />
-<form action="{% url 'customers:edit_profile' %}" method="post">
+<form action="{% url 'customers:create' %}" method="post">
     {% csrf_token %}
     <div class="mb-3">
 
@@ -29,11 +29,18 @@
         <input class="form-control text-center mb-3" readonly type="text" name="zip_code" id="zip_code"
             value="{{logged_in_customer.zip_code}}">
 
-        <label for="country" class="form-label">country:</label>
+        <label for="country" class="form-label">Country:</label>
         <input class="form-control text-center mb-3" readonly type="text" name="country" id="country"
             value="{{logged_in_customer.country}}">
 
+        <input class="d-none" readonly type="text" name="latitude" id="latitude"
+            value="{{logged_in_customer.latitude}}">
+
+        <input class="d-none" readonly type="text" name="longitude" id="longitude"
+            value="{{logged_in_customer.longitude}}">
+
     </div>
+
     <label for="weekly_pickup" class="inpußt-group-text">Pickup Day:</label>
     <div class="input-group mb-3">
         <select class="form-select text-center" name="weekly_pickup" id="weekly_pickup">
@@ -46,7 +53,9 @@
             <option value="Saturday">Saturday</option>
         </select>
     </div>
+
     <input class="btn btn-outline-primary" type="submit" value="Submit">
+
 </form>
 
 <script>
@@ -81,7 +90,7 @@
                     }
                     if (place.address_components[i].types[j] == "route") {
                     }
-                    if (place.address_components[i].types[j] == "postal_town") {
+                    if (place.address_components[i].types[j] == "locality") {
                         document.getElementById('city').value = place.address_components[i].long_name
                         document.getElementById('city').innerText = place.address_components[i].long_name
                     }
@@ -96,6 +105,10 @@
                     }
                 }
             }
+
+            document.getElementById('latitude').value = place.geometry.location.lat()
+            document.getElementById('longitude').value = place.geometry.location.lng()
+ 
         }
     }
 </script>
