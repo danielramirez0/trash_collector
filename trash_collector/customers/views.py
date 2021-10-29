@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from datetime import date
+from django.conf import settings
 
 from .models import Customer
 
@@ -37,7 +38,10 @@ def create(request):
         new_customer.save()
         return HttpResponseRedirect(reverse('customers:index'))
     else:
-        return render(request, 'customers/create.html')
+        context = {
+            'api_key': settings.GOOGLE_API_KEY
+        }
+        return render(request, 'customers/create.html', context)
 
 @login_required
 def suspend_service(request):
@@ -88,6 +92,7 @@ def edit_profile(request):
         return HttpResponseRedirect(reverse('customers:index'))
     else:
         context = {
-            'logged_in_customer': logged_in_customer
+            'logged_in_customer': logged_in_customer,
+            'api_key': settings.GOOGLE_API_KEY
         }
         return render(request, 'customers/edit_profile.html', context)

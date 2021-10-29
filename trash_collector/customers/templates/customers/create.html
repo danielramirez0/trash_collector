@@ -6,22 +6,101 @@
 
 {% block content %}
 
-<form action="{% url 'customers:create' %}" method="post">
+<label for="autocomplete" class="form-label">Use to fill address fields:</label>
+<input class='form-control text-center' id="autocomplete" placeholder="Type address here, select and press enter"
+    type="text" />
+<form action="{% url 'customers:edit_profile' %}" method="post">
     {% csrf_token %}
-    Name: <input type="text" name="name" id="name"><br />
-    Address: <input type="text" name="address" id="address"><br />
-    Zip Code: <input type="text" name="zip_code" id="zip_code"><br />
-    Choose your Weekly Pickup Day:
-    <select name="weekly_pickup" id="weekly_pickup">
-        <option value="Sunday">Sunday</option>
-        <option value="Monday">Monday</option>
-        <option value="Tuesday">Tuesday</option>
-        <option value="Wednesday">Wednesday</option>
-        <option value="Thursday">Thursday</option>
-        <option value="Friday">Friday</option>
-        <option value="Saturday">Saturday</option>
-    </select>
-    <input type="submit" value="Register">
+    <div class="mb-3">
+
+        <label for="name" class="form-label">Name:</label>
+        <input class="form-control text-center mb-3" type="text" name="name" id="name"
+            value="{{logged_in_customer.name}}">
+
+        <label for="address" class="form-label">Address:</label>
+        <input class="form-control text-center mb-3" readonly type="text" name="address" id="address"
+            value="{{logged_in_customer.address}}">
+
+        <label for="city" class="form-label">City:</label>
+        <input class="form-control text-center mb-3" readonly type="text" name="city" id="city"
+            value="{{logged_in_customer.city}}">
+
+        <label for="zip_code" class="form-label">Zip Code:</label>
+        <input class="form-control text-center mb-3" readonly type="text" name="zip_code" id="zip_code"
+            value="{{logged_in_customer.zip_code}}">
+
+        <label for="country" class="form-label">country:</label>
+        <input class="form-control text-center mb-3" readonly type="text" name="country" id="country"
+            value="{{logged_in_customer.country}}">
+
+    </div>
+    <label for="weekly_pickup" class="inpußt-group-text">Pickup Day:</label>
+    <div class="input-group mb-3">
+        <select class="form-select text-center" name="weekly_pickup" id="weekly_pickup">
+            <option value="Sunday">Sunday</option>
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+        </select>
+    </div>
+    <input class="btn btn-outline-primary" type="submit" value="Submit">
 </form>
+
+<script>
+    let autocomplete;
+    function initAutocomplete() {
+        autocomplete = new google.maps.places.Autocomplete(
+            document.getElementById('autocomplete'),
+            {
+                types: ['establishment'],
+                componentRestrictions: { 'country': ['US'] },
+                fields: ['address_components', 'geometry']
+            });
+
+        autocomplete.addListener('place_changed', onPlaceChanged);
+    }
+    function onPlaceChanged() {
+        var place = autocomplete.getPlace();
+
+        if (!place.geometry) {
+            // User did not select a prediction; reset the input field
+            document.getElementById('autocomplete').placeholder = 'Enter a place';
+        } else {
+            // Display details about the valid place
+            console.log(place)
+            for (var i = 0; i < place.address_components.length; i++) {
+                for (var j = 0; j < place.address_components[i].types.length; j++) {
+                    if (place.address_components[i].types[j] == "street_number") {
+                        var num = place.address_components[i].long_name
+                        var addy = place.address_components[i + 1].long_name
+                        document.getElementById('address').value = num + " " + addy
+                        document.getElementById('address').innerText = num + " " + addy
+                    }
+                    if (place.address_components[i].types[j] == "route") {
+                    }
+                    if (place.address_components[i].types[j] == "postal_town") {
+                        document.getElementById('city').value = place.address_components[i].long_name
+                        document.getElementById('city').innerText = place.address_components[i].long_name
+                    }
+                    if (place.address_components[i].types[j] == "country") {
+                        document.getElementById('country').value = place.address_components[i].long_name
+                        document.getElementById('country').innerText = place.address_components[i].long_name
+                    }
+
+                    if (place.address_components[i].types[j] == "postal_code") {
+                        document.getElementById('zip_code').value = place.address_components[i].long_name
+                        document.getElementById('zip_code').innerText = place.address_components[i].long_name
+                    }
+                }
+            }
+        }
+    }
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&libraries=places&callback=initAutocomplete" async
+    defer /></script>
 
 {% endblock %}
