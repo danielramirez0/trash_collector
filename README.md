@@ -39,5 +39,7 @@ Using the application, customers are able to:
 ## Technology
 
 - Bootstrap Content Delivery Network (CDN) on the base.html parent template to stylize templates and front end elements
+- Django
 - Google Maps API
+- Google Places API
 - Google Geocoding API
