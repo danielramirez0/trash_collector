@@ -5,6 +5,21 @@
 {% block content %}
 {% load static %}
 {% if user.is_authenticated %}
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+    <div id="login-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img height="30px" src="{% static 'img/toast-logo.jpg' %}" class="rounded me-2" alt="Recycle can">
+            <strong class="me-auto">Successful login</strong>
+            <small>{{user.username}}</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Welcome back {{logged_in_employee.name}}!
+        </div>
+    </div>
+</div>
+
+
 <h2 class="pb-4">Hello {{ logged_in_employee.name }}!</h2>
 <img height="500" src="{% static image_location %}" alt="{{logged_in_employee.name}}" />
 <div class="pt-4 row">
@@ -18,7 +33,7 @@
                 <h6 class="card-subtitle mb-2 text-muted">{{customer.address}}</h6>
                 <p class="card-text">Account balance ${{customer.balance}}</p>
                 <a href="{% url 'employees:pickup' customer.id %}" class="btn btn-success">Pickup</a>
-                <button class="btn btn-outline-secondary" onclick="initMap()">Show on Map</button>
+                <button class="btn btn-outline-secondary" onclick="initMap(lat='{{customer.latitude}}', lng='{{customer.longitude}}')">Show on Map</button>
             </div>
         </div>
     </div>
@@ -29,10 +44,12 @@
     <img src="{% static chat_image %}" alt="Employees chatting"" />
     {% endif %}
 </div>
+<script type="text/javascript" src="{% static 'js/map.js' %}"></script>
+<div class='d-none' id="map"></div>
+<!--<script async src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&callback=initMap&libraries=&v=weekly&channel=2"></script> -->
 
 {% else %}
 <p>You are at the employee index, but you are not logged in.</p>
-<a href=" {% url 'login' %}">Log In</a>
-    <a href="{% url 'accounts:register' %}">Sign Up</a>
+<a href=" {% url 'login' %}">Log In</a><a href="{% url 'accounts:register' %}">Sign Up</a>
     {% endif %}
     {% endblock %}
