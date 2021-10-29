@@ -30,7 +30,9 @@ def index(request):
             'logged_in_employee': logged_in_employee,
             'today': today,
             'assigned_customers': assigned_customers,
-            'all_customers': Customer.objects.all()
+            'all_customers': Customer.objects.all(),
+            'image_location': 'img/' +logged_in_user.username + ".jpg",
+            'chat_image': 'img/garbage_chat.jpg'
         }
         return render(request, 'employees/index.html', context)
     except ObjectDoesNotExist:

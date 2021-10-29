@@ -3,6 +3,7 @@
 {% block title %}{% block header %} {{display_title}}{% endblock %}{% endblock %}
 
 {% block content %}
+{% load static %}
 {% if user.is_authenticated %}
 <div class="row">
     {% for customer in all_customers %}
@@ -42,63 +43,11 @@
         </div>
         <button type="submit" class="btn btn-primary" value="Submit">Search</button>
     </form>
-    <script type="text/javascript">
-        const zipCodes = document.getElementsByName('zip-code')
-        const weekdays = document.getElementsByName('weekly_pickup')
-        let sortMethod = document.getElementById("sort-method")
-        let sortValue = document.getElementById("sort-value")
-        sortMethod.addEventListener("change", function () {
-            zipCodes.forEach(el => el.style = 'display:none')
-            weekdays.forEach(el => el.style = 'display:none')
-            if (sortMethod.value === 'All') {
-                sortValue.style = 'display: none;'
-            }
-            if (sortMethod.value === 'zip_code') {
-                sortValue.style = 'display: block;'
-                zipCodes.forEach((el) => {
-                    el.style = ""
-                    el.innerText = el.value
-                })
-            }
-            else if (sortMethod.value === 'weekly_pickup') {
-                sortValue.style = 'display: block;'
-                weekdays.forEach((el) => {
-                    el.style = ""
-                    el.innerText = el.value
-                })
-            }
-        })
-    </script>
+    <script type="text/javascript" src="{% static 'js/filters.js' %}"></script>
 </div>
-<style type="text/css">
-    /* Set the size of the div element that contains the map */
-    #map {
-        height: 400px;
-        /* The height is 400 pixels */
-        width: 100%;
-        /* The width is the width of the web page */
-    }
-</style>
-<script>
-    // Initialize and add the map
-    function initMap() {
-        // The location of Uluru
-        const uluru = { lat: 38.344, lng: -120.036 };
-        // The map, centered at Uluru
-        const map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 4,
-            center: uluru,
-        });
-        // The marker, positioned at Uluru
-        const marker = new google.maps.Marker({
-            position: uluru,
-            map: map,
-        });
-    }
-</script>
+<script type="text/javascript" src="{% static 'js/map.js' %}"></script>
 <div id="map"></div>
 <script async src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&callback=initMap&libraries=&v=weekly&channel=2"></script>
-
 
 {% else %}
 <p>You are at the employee index, but you are not logged in.</p>
