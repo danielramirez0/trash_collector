@@ -25,6 +25,10 @@
         <input class="form-control text-center mb-3" readonly type="text" name="city" id="city"
             value="{{logged_in_customer.city}}">
 
+        <label for="state" class="form-label">State:</label>
+        <input class="form-control text-center mb-3" readonly type="text" name="state" id="state"
+            value="{{logged_in_customer.state}}">
+
         <label for="zip_code" class="form-label">Zip Code:</label>
         <input class="form-control text-center mb-3" readonly type="text" name="zip_code" id="zip_code"
             value="{{logged_in_customer.zip_code}}">
@@ -93,6 +97,10 @@
                     if (place.address_components[i].types[j] == "locality") {
                         document.getElementById('city').value = place.address_components[i].long_name
                         document.getElementById('city').innerText = place.address_components[i].long_name
+                    }
+                    if (place.address_components[i].types[j] == "administrative_area_level_1") {
+                        document.getElementById('state').value = place.address_components[i].short_name
+                        document.getElementById('state').innerText = place.address_components[i].short_name
                     }
                     if (place.address_components[i].types[j] == "country") {
                         document.getElementById('country').value = place.address_components[i].long_name

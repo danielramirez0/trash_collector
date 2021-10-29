@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.apps import apps
 from django.db.models import Q
 from datetime import date
-
+from django.conf import settings
 
 from .models import Employee
 # Create your views here.
@@ -98,7 +98,8 @@ def customers(request):
             'all_customers': customers_list,
             'display_title': display_title,
             'zip_codes': Customer.objects.order_by('zip_code').values('zip_code').distinct(),
-            'weekly_pickups': Customer.objects.order_by('weekly_pickup').values('weekly_pickup').distinct()
+            'weekly_pickups': Customer.objects.order_by('weekly_pickup').values('weekly_pickup').distinct(),
+            'api_key': settings.GOOGLE_API_KEY
         }
         return render(request, 'employees/customers.html', context)
     except ObjectDoesNotExist:

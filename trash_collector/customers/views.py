@@ -102,6 +102,7 @@ def edit_profile(request):
         name_from_form = request.POST.get('name')
         address_from_form = request.POST.get('address')
         city_from_form = request.POST.get('city')
+        state_from_form = request.POST.get('state')
         zip_from_form = request.POST.get('zip_code')
         country_from_form = request.POST.get('country')
         weekly_pickup_from_form = request.POST.get('weekly_pickup')
@@ -110,6 +111,7 @@ def edit_profile(request):
         logged_in_customer.name = name_from_form
         logged_in_customer.address = address_from_form
         logged_in_customer.city = city_from_form
+        logged_in_customer.state = state_from_form
         logged_in_customer.zip_code = zip_from_form
         logged_in_customer.country = country_from_form
         logged_in_customer.weekly_pickup = weekly_pickup_from_form
