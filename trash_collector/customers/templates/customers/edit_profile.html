@@ -8,18 +8,30 @@
 <br />
 <form action="{% url 'customers:edit_profile' %}" method="post">
     {% csrf_token %}
-    Name: <input type="text" name="name" id="name" value="{{logged_in_customer.name}}">
-    <br />
-    <br />
-    Address: <input type="text" name="address" id="address" value="{{logged_in_customer.address}}">
-    <br />
-    <br />
-    Zip Code: <input type="text" name="zip_code" id="zip_code" value="{{logged_in_customer.zip_code}}">
-    <br />
-    <br />
-    Weekly Pickup Day: <input type="text" name="weekly" id="weekly" value="{{logged_in_customer.weekly_pickup}}">
-    <br />
-    <input type="submit" value="Submit">
+    <div class="mb-3">
+        <label for="name" class="form-label">Name:</label>
+        <input class="form-control text-center mb-3" type="text" name="name" id="name"
+            value="{{logged_in_customer.name}}">
+        <label for="address" class="form-label">Address:</label>
+        <input class="form-control text-center mb-3" type="text" name="address" id="address"
+            value="{{logged_in_customer.address}}">
+        <label for="zip_code" class="form-label">Zip Code:</label>
+        <input class="form-control text-center mb-3" type="text" name="zip_code" id="zip_code"
+            value="{{logged_in_customer.zip_code}}">
+    </div>
+    <div class="input-group mb-3">
+        <label for="weekly_pickup" class="input-group-text">Pickup Day:</label>
+        <select class="form-select text-center" name="weekly_pickup" id="weekly_pickup">
+            <option value="Sunday">Sunday</option>
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+        </select>
+        <input type="submit" value="Submit">
+    </div>
 </form>
 
 {% endblock %}
