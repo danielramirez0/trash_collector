@@ -33,7 +33,7 @@
                 <h6 class="card-subtitle mb-2 text-muted">{{customer.address}}</h6>
                 <p class="card-text">Account balance ${{customer.balance}}</p>
                 <a href="{% url 'employees:pickup' customer.id %}" class="btn btn-success">Pickup</a>
-                <button class="btn btn-outline-secondary" onclick="initMap(lat='{{test.dd}}')">Show on Map</button>
+                <button class="btn btn-outline-secondary" onclick="initMap(lat='{{customer.latitude}}', lng='{{customer.longitude}}')">Show on Map</button>
             </div>
         </div>
     </div>
@@ -44,6 +44,9 @@
     <img src="{% static chat_image %}" alt="Employees chatting"" />
     {% endif %}
 </div>
+<script type="text/javascript" src="{% static 'js/map.js' %}"></script>
+<div class='d-none' id="map"></div>
+<!--<script async src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&callback=initMap&libraries=&v=weekly&channel=2"></script> -->
 
 {% else %}
 <p>You are at the employee index, but you are not logged in.</p>

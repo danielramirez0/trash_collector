@@ -13,7 +13,8 @@
             <h6 class="card-subtitle mb-2 text-muted">{{customer.address}}</h6>
             <h6 class="card-subtitle mb-2 text-muted">{{customer.zip_code}}</h6>
             <p class="card-text">Account balance: ${{customer.balance}}</p>
-            <p class="card-text">Pickup day: {{customer.weekly_pickup}}</p>
+            <p class="card-text">Date of last pickup: {{customer.date_of_last_pickup}}</p>
+            <p class="card-text">Weekly pickup day: {{customer.weekly_pickup}}</p>
         </div>
     </div>
     {% endfor %}
@@ -47,7 +48,7 @@
 </div>
 <script type="text/javascript" src="{% static 'js/map.js' %}"></script>
 <div id="map"></div>
-<script async src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&callback=initMap&libraries=&v=weekly&channel=2"></script>
+<script id='map-script' async src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&callback=initMap&libraries=&v=weekly&channel=2"></script>
 
 {% else %}
 <p>You are at the employee index, but you are not logged in.</p>

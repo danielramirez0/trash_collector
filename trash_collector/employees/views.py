@@ -66,7 +66,8 @@ def edit_profile(request):
         return HttpResponseRedirect(reverse('employees:index'))
     else:
         context = {
-            'logged_in_employee': logged_in_employee
+            'logged_in_employee': logged_in_employee,
+            'api_key': settings.GOOGLE_API_KEY
         }
         return render(request, 'employees/edit_profile.html', context)
 

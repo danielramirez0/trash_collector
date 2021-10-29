@@ -9,6 +9,7 @@
 <label for="autocomplete" class="form-label">Use to fill address fields:</label>
 <input class='form-control text-center' id="autocomplete" placeholder="Type address here, select and press enter"
     type="text" />
+
 <form action="{% url 'customers:edit_profile' %}" method="post">
     {% csrf_token %}
     <div class="mb-3">
