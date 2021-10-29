@@ -5,17 +5,39 @@
 {% block header %} Customer Portal {% endblock %}
 
 {% block content %}
+{% load static %}
   {% if user.is_authenticated %}
-        Hello {{ logged_in_customer.name }}!<br />
-        Address: {{ logged_in_customer.address }} {{logged_in_customer.zip_code }}<br />
-        Current balance: $ {{ logged_in_customer.balance }}.00
-        <br />
-        <br />
-        Your Weekly Pickup Day: {{ logged_in_customer.weekly_pickup }}
-        <br />
-        <br />
+
+        <h2>Hello {{ logged_in_customer.name }}!</h2> 
+
+        <table class="table table-success table-striped">
+            <thead>
+                <tr class="table-success">
+                    <th class="table-success" scope="col">Address</th>
+                    <th class="table-success" scope="col">City</th>
+                    <th class="table-success" scope="col">State</th>
+                    <th class="table-success" scope="col">Zip</th>
+                    <th class="table-success" scope="col">Balance Due</th>
+                    <th class="table-success" scope="col">Weekly Pickup day</th>
+                </tr>
+                <tbody>
+                    <td class="table-success">{{logged_in_customer.address}}</td>
+                    <td class="table-success">{{logged_in_customer.city}}</td>
+                    <td class="table-success">{{logged_in_customer.state}}</td>
+                    <td class="table-success">{{logged_in_customer.zip_code}}</td>
+                    <td class="table-success">${{logged_in_customer.balance}}</td>
+                    <td class="table-success">{{logged_in_customer.weekly_pickup}}</td>
+                </tbody>
+            </thead>
+        </table>
+
+        <p>There are a variety of options available to you in the menu bar and remember...</p>
+
+        <img src="{% static 'img/good-vibes.jpg' %}" alt="Good Vibes Only">
+
         {% if logged_in_customer.one_time_pickup %}
-          You have an extra pickup scheduled for {{ logged_in_customer.one_time_pickup }}
+        <h2 style="color: red;">Heads up!</h2>
+        <h3>You have an extra pickup scheduled for {{ logged_in_customer.one_time_pickup }}</h3>
         {% endif %}
         <br />
         <br />
